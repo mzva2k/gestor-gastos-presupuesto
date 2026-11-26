@@ -1,0 +1,47 @@
+{
+  "presupuestoMensual": 1800.00,
+  "gastos": [
+    {
+      "id": 1,
+      "descripcion": "Alquiler departamento",
+      "categoria": "Vivienda",
+      "fecha": "2026-11-02",
+      "monto": 850.00
+    },
+    {
+      "id": 2,
+      "descripcion": "Compra semanal supermercado",
+      "categoria": "Alimentacion",
+      "fecha": "2026-11-05",
+      "monto": 145.50
+    },
+    {
+      "id": 3,
+      "descripcion": "Abono transporte urbano",
+      "categoria": "Transporte",
+      "fecha": "2026-11-07",
+      "monto": 55.00
+    },
+    {
+      "id": 4,
+      "descripcion": "Internet fibra optica",
+      "categoria": "Servicios",
+      "fecha": "2026-11-10",
+      "monto": 42.00
+    },
+    {
+      "id": 5,
+      "descripcion": "Cena y cine",
+      "categoria": "Ocio",
+      "fecha": "2026-11-14",
+      "monto": 64.25
+    },
+    {
+      "id": 6,
+      "descripcion": "Farmacia",
+      "categoria": "Salud",
+      "fecha": "2026-11-16",
+      "monto": 28.80
+    }
+  ]
+}
