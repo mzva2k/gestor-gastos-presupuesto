@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Gastos y Presupuesto Mensual</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <h1>Presupuesto Mensual</h1>
+      <p class="subtitulo">Control de gastos personales</p>
+    </div>
+  </header>
+
+  <main class="contenedor principal">
+    <div id="aviso-sistema" class="aviso oculto" role="alert"></div>
+
+    <!-- Resumen de totales -->
+    <section class="resumen-grid" aria-label="Resumen de presupuesto">
+      <article class="tarjeta metrica">
+        <span class="etiqueta">Presupuesto mensual</span>
+        <div class="presupuesto-control">
+          <strong id="monto-presupuesto" class="valor">$0.00</strong>
+          <button id="boton-editar-presupuesto" type="button" class="boton-secundario boton-pequeno">
+            Editar
+          </button>
+        </div>
+        <form id="formulario-presupuesto" class="formulario-inline oculto">
+          <input
+            id="entrada-presupuesto"
+            type="number"
+            step="0.01"
+            min="0"
+            max="999999999"
+            placeholder="Nuevo presupuesto"
+            aria-label="Nuevo presupuesto mensual"
+            required
+          />
+          <button type="submit" class="boton-primario boton-pequeno">Guardar</button>
+          <button id="boton-cancelar-presupuesto" type="button" class="boton-secundario boton-pequeno">
+            Cancelar
+          </button>
+        </form>
+      </article>
+
+      <article class="tarjeta metrica">
+        <span class="etiqueta">Total gastado</span>
+        <strong id="total-gastado" class="valor">$0.00</strong>
+        <span id="cantidad-gastos" class="detalle">0 gastos mostrados</span>
+      </article>
+
+      <article class="tarjeta metrica">
+        <span class="etiqueta">Saldo disponible</span>
+        <strong id="saldo-disponible" class="valor">$0.00</strong>
+        <span id="porcentaje-usado" class="detalle">0% del presupuesto mensual</span>
+      </article>
+    </section>
+
+    <div class="contenido-principal">
+      <!-- Columna izquierda: registro de gasto y grafico -->
+      <div class="columna-lateral">
+        <section class="tarjeta">
+          <h2>Registrar gasto</h2>
+          <form id="formulario-gasto" class="formulario">
+            <div class="campo">
+              <label for="entrada-descripcion">Descripcion</label>
+              <input
+                id="entrada-descripcion"
+                type="text"
+                maxlength="120"
+                placeholder="Ej. Supermercado, internet, cafe"
+                required
+              />
+            </div>
+
+            <div class="fila-campos">
+              <div class="campo">
+                <label for="selector-categoria">Categoria</label>
+                <select id="selector-categoria" required>
+                  <option value="Vivienda">Vivienda</option>
+                  <option value="Alimentacion">Alimentacion</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Servicios">Servicios</option>
+                  <option value="Ocio">Ocio</option>
+                  <option value="Salud">Salud</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="entrada-fecha">Fecha</label>
+                <input id="entrada-fecha" type="date" required />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="entrada-monto">Monto</label>
+              <input
+                id="entrada-monto"
+                type="number"
+                step="0.01"
+                min="0.01"
+                max="999999999"
+                placeholder="0.00"
+                required
+              />
+            </div>
+
+            <button type="submit" class="boton-primario ancho-completo">Agregar gasto</button>
+          </form>
+        </section>
+
+        <section class="tarjeta">
+          <h2>Gastos por categoria</h2>
+          <div class="contenedor-grafico">
+            <canvas id="grafico-gastos" width="420" height="240" aria-label="Grafico de gastos por categoria"></canvas>
+          </div>
+        </section>
+      </div>
+
+      <!-- Columna derecha: filtros, ordenamiento y tabla -->
+      <section class="tarjeta columna-listado">
+        <div class="cabecera-seccion">
+          <h2>Listado de gastos</h2>
+          <button id="boton-limpiar-filtros" type="button" class="boton-secundario boton-pequeno">
+            Limpiar filtros
+          </button>
+        </div>
+
+        <div class="controles-filtro">
+          <div class="fila-campos">
+            <div class="campo">
+              <label for="filtro-fecha-desde">Desde</label>
+              <input id="filtro-fecha-desde" type="date" />
+            </div>
+            <div class="campo">
+              <label for="filtro-fecha-hasta">Hasta</label>
+              <input id="filtro-fecha-hasta" type="date" />
+            </div>
+          </div>
+
+          <div class="fila-campos">
+            <div class="campo">
+              <label for="filtro-monto-min">Monto minimo</label>
+              <input id="filtro-monto-min" type="number" step="0.01" min="0" max="999999999" placeholder="0.00" />
+            </div>
+            <div class="campo">
+              <label for="filtro-monto-max">Monto maximo</label>
+              <input id="filtro-monto-max" type="number" step="0.01" min="0" max="999999999" placeholder="Sin limite" />
+            </div>
+          </div>
+
+          <div class="fila-campos">
+            <div class="campo">
+              <label for="filtro-categoria">Categoria</label>
+              <select id="filtro-categoria">
+                <option value="todas">Todas</option>
+                <option value="Vivienda">Vivienda</option>
+                <option value="Alimentacion">Alimentacion</option>
+                <option value="Transporte">Transporte</option>
+                <option value="Servicios">Servicios</option>
+                <option value="Ocio">Ocio</option>
+                <option value="Salud">Salud</option>
+                <option value="Otros">Otros</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="selector-orden">Ordenar por</label>
+              <select id="selector-orden">
+                <option value="fecha-desc">Fecha (mas reciente)</option>
+                <option value="fecha-asc">Fecha (mas antigua)</option>
+                <option value="monto-desc">Monto (mayor a menor)</option>
+                <option value="monto-asc">Monto (menor a mayor)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabla-envoltorio">
+          <table class="tabla-gastos">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Categoria</th>
+                <th>Descripcion</th>
+                <th class="alinear-derecha">Monto</th>
+                <th class="alinear-centro">Accion</th>
+              </tr>
+            </thead>
+            <tbody id="cuerpo-tabla-gastos"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
